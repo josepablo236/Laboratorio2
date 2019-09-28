@@ -138,6 +138,7 @@
     <Compile Include="ArbolHuffman\ArbolHuff.cs" />
     <Compile Include="Controllers\ArchivoComprimido.cs" />
     <Compile Include="ArbolHuffman\Descompresion.cs" />
+    <Compile Include="CompresionLZ\DescompresionLZW.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

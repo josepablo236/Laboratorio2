@@ -152,7 +152,6 @@ namespace Laboratorio1.ArbolHuffman
             {
                 TextoEnCodigo += Diccionariocodigos.FirstOrDefault(x => x.Key == letra).Value;
             }
-
         }
 
         //ESCRIBIR Y CREAR ARCHIVO .HUFF CON EL TEXTO COMPRIMIDO Y DICCIONARIO
@@ -212,9 +211,7 @@ namespace Laboratorio1.ArbolHuffman
                     string temp = binario.Substring(0, 8 - (data.Length - i)) + data.Substring(i, data.Length - i);
                     byteList.Add(Convert.ToByte(temp, 2));
                 }
-
             }
-
             return byteList;
         }
 

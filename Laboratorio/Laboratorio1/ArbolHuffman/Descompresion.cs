@@ -12,7 +12,7 @@ namespace Laboratorio1.Controllers
 {
     public class Descompresion
     {
-        public void LeerArchivo(string textname, string filepath)
+        public string LeerArchivo(string textname, string filepath)
         {
             //Guardaremos la letra y cuantas veces se repite
             string[] texto;
@@ -50,10 +50,9 @@ namespace Laboratorio1.Controllers
                 Diccionario.Add(parts[i], parts[i + 1]);
             }
             int bufferLength = codificado.Length;
-            var byteBuffer = new byte[bufferLength];
+            var byteBuffer = new byte[320000000];
             using (var stream = new FileStream(path, FileMode.Open))
             {
-
                 List<string> Textarchivo = new List<string>();
                 using (var reader = new BinaryReader(stream))
                 {
@@ -90,9 +89,7 @@ namespace Laboratorio1.Controllers
                 else { tamano++; }
 
             }
-            //string Texto = Text_Descomprimido;
-            //EscribirDescompresion(Texto, filepath);
-            EscribirDescompresion(byteList, filepath);
+            return EscribirDescompresion(byteList, filepath, textname);
         }
 
         //Convertir a Binario
@@ -112,11 +109,9 @@ namespace Laboratorio1.Controllers
             return binario;
         }
 
-
-        //Escribir Archivo Descomprimido
-        public void EscribirDescompresion(List<byte> ListaBytes, string filepath)
+        public string EscribirDescompresion(List<byte> ListaBytes, string filepath, string textname)
         {
-            var path = Path.Combine(filepath, "ArchivoDescomprimido.huff");
+            var path = Path.Combine(filepath, System.IO.Path.GetFileNameWithoutExtension(textname) + ".txt");
             using (var writeStream1 = new FileStream(path, FileMode.OpenOrCreate))
             {
                 using (var writer = new BinaryWriter(writeStream1))
@@ -127,6 +122,7 @@ namespace Laboratorio1.Controllers
                     }
                 }
             }
+            return System.IO.Path.GetFileNameWithoutExtension(textname) + ".txt";
         }
     }
 }
