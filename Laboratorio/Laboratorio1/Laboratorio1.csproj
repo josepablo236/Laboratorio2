@@ -126,6 +126,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="ArbolHuffman\FactoresViewModel.cs" />
     <Compile Include="ArbolHuffman\Nodo.cs" />
     <Compile Include="CompresionLZ\CompresionLZW.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
@@ -177,10 +178,11 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\FileUpload\Index.cshtml" />
-    <Content Include="Views\ReadText\Read.cshtml" />
     <Content Include="Views\ArbolHuff\MostrarArbol.cshtml" />
     <Content Include="Views\ArbolHuff\GuardarArchivo.cshtml" />
+    <Content Include="Views\ReadText\Read.cshtml" />
     <Content Include="Views\ReadText\ReadLZ.cshtml" />
+    <Content Include="Views\ReadText\Download.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

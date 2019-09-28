@@ -220,6 +220,18 @@ namespace Laboratorio1.ArbolHuffman
             string archivo = "Archivo.huff";
             return View(archivo);
         }
+
+        public int TamañoComprimido()
+        {
+            var path = Path.Combine(FilePath, "ArchivoComprimido.huff");
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                using (var reader = new BinaryReader(stream))
+                {
+                    return Convert.ToInt32(reader.BaseStream.Length);
+                }
+            }
+        }
     }
 }
 
