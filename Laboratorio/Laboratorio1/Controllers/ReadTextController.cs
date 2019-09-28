@@ -29,47 +29,54 @@ namespace Laboratorio1.Controllers
             List<string> Text_archivo = new List<string>();
             var path = Path.Combine(Server.MapPath("~/Archivo"), filename);
             FilePath = Server.MapPath("~/Archivo");
-
+            var modelo = new FactoresViewModel();
 
             using (var stream = new FileStream(path, FileMode.Open))
             {
                 using (var reader = new BinaryReader(stream))
                 {
+                    modelo.TamañoOriginal = Convert.ToInt32(reader.BaseStream.Length);
                     var byteBuffer = new byte[bufferLength];
                     while (reader.BaseStream.Position != reader.BaseStream.Length)
                     {
                         byteBuffer = reader.ReadBytes(bufferLength);
-                    }
-                    foreach (var item in byteBuffer)
-                    {
-                        if (Diccionario_CaracteresHuff.ContainsKey(Convert.ToString(item)) == true)
+                        foreach (var item in byteBuffer)
                         {
-                            Diccionario_CaracteresHuff[Convert.ToString(item)] += 1;
+                            if (Diccionario_CaracteresHuff.ContainsKey(Convert.ToString(item)) == true)
+                            {
+                                Diccionario_CaracteresHuff[Convert.ToString(item)] += 1;
+                            }
+                            else
+                            {
+                                Diccionario_CaracteresHuff.Add(Convert.ToString(item), 1);
+                            }
+                            Text_archivo.Add(Convert.ToString(item));
                         }
-                        else
-                        {
-                            Diccionario_CaracteresHuff.Add(Convert.ToString(item), 1);
-                        }
-                        Text_archivo.Add(Convert.ToString(item));
                     }
                 }
                 ArbolHuff arbol = new ArbolHuff();
                 //Manda a llamar el metodo del arbol en el que agrega a una lista de nodos, los distintos caracteres que existen
                 arbol.agregarNodos(Diccionario_CaracteresHuff, Text_archivo, listadeNodos, FilePath);
+                modelo.TamañoComprimido = arbol.TamañoComprimido();
             }
-            var items = FilesUploaded();
-            return View(items);
+            modelo.FactorDeCompresion = modelo.TamañoOriginal / modelo.TamañoComprimido;
+            modelo.RazonDeCompresion = modelo.TamañoComprimido / modelo.TamañoOriginal;
+            return View(modelo);
         }
 
 
         //---------------------------------------------------------- COMPRESION LZW  --------------------------------------------------------------------------------------------- -
         public ViewResult ReadLZ(string filename)
         {
+            var modelo = new FactoresViewModel();
             var path = Path.Combine(Server.MapPath("~/Archivo"), filename);
             CompresionLZW compresionLZW = new CompresionLZW();
             compresionLZW.ComprimirLZW(filename, Server.MapPath("~/Archivo"));
-            var items = FilesUploaded2();
-            return View(items);
+            modelo.TamañoOriginal = compresionLZW.ObtenerTamañoOriginal();
+            modelo.TamañoComprimido = compresionLZW.ObtenerTamañoComprimido(Server.MapPath("~/Archivo"), filename);
+            modelo.FactorDeCompresion = modelo.TamañoOriginal / modelo.TamañoComprimido;
+            modelo.RazonDeCompresion = modelo.TamañoComprimido / modelo.TamañoOriginal;
+            return View(modelo);
         }
 
         //------------------- MOSTRAR ARCHIVOS COMPRIMIDOS HUFFMAN-------------------------------------
@@ -104,10 +111,9 @@ namespace Laboratorio1.Controllers
             return filesupld;
         }
 
-        public FileResult Download(string TxtName)
+        public ActionResult Download(string TxtName)
         {
-            var FileVirtualPath = "Archivo/" + TxtName;
-            return File(FileVirtualPath, "application/force- download", Path.GetFileName(FileVirtualPath));
+            return View();
         }
     }
 }

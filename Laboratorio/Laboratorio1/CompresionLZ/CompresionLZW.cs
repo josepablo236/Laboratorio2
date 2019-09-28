@@ -12,6 +12,8 @@ namespace Laboratorio1.CompresionLZ
         public static int tamaño;
         public static Dictionary<string, int> dictionary = new Dictionary<string, int>();
         public static Dictionary<string, int> dictionaryoriginals = new Dictionary<string, int>();
+        double tamañoOriginal = 0;
+        double tamañoComprimido = 0;
 
         public void ComprimirLZW(string filename, string path)
         {
@@ -34,6 +36,7 @@ namespace Laboratorio1.CompresionLZ
                 using (var reader = new BinaryReader(stream))
                 {
                     var byteBuffer = new byte[bufferLength];
+                    tamañoOriginal = Convert.ToInt32(reader.BaseStream.Length);
                     while (reader.BaseStream.Position != reader.BaseStream.Length)
                     {
 
@@ -164,6 +167,23 @@ namespace Laboratorio1.CompresionLZ
                             writer2.Write(tamaño.ToString());
                         }
                     }
+                }
+            }
+        }
+
+        public double ObtenerTamañoOriginal()
+        {
+            return tamañoOriginal;
+        }
+        public double ObtenerTamañoComprimido(string FilePath, string textname)
+        {
+            var path = Path.Combine(FilePath, Path.GetFileNameWithoutExtension(textname) + ".lzw");
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                using (var reader = new BinaryReader(stream))
+                {
+                    tamañoComprimido = Convert.ToInt32(reader.BaseStream.Length);
+                    return tamañoComprimido;
                 }
             }
         }
