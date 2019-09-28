@@ -34,9 +34,9 @@ namespace Laboratorio1.CompresionLZ
                     textocompleto = reader.ReadToEnd();
                 }
             }
-            string[] palabras = textocompleto.Split(new string[] { "||" }, StringSplitOptions.None);
+            string[] palabras = textocompleto.Split(new string[] { "|||" }, StringSplitOptions.None);
             string codificado = palabras[0];
-            textocompleto = textocompleto.Substring(codificado.Length + 2);
+            textocompleto = textocompleto.Substring(codificado.Length + 3);
             char[] delimiters = new char[] { '[', ']', ',', ' ' };
             string[] parts = textocompleto.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
@@ -111,24 +111,22 @@ namespace Laboratorio1.CompresionLZ
         }
         public static string[] Descompress(List<int> compressed)
         {
-            string temp = "";
-            foreach (var item in compressed)
-            {
-                temp += item;
-            }
-
             string descom = "";
             string anterior = string.Empty;
             foreach (var actual in compressed)
             {
                 string union = "";
+                if (dictionary.Count < actual)
+                {
+                    break;
+                }
                 if (anterior == "")
                 {
                     union = dictionary[actual];
                 }
                 else
                 {
-                    union = anterior + "|" + dictionary[actual];
+                     union = anterior + "|" + dictionary[actual]; 
                 }
                 if (dictionary.ContainsValue(union))
                 {
@@ -153,9 +151,6 @@ namespace Laboratorio1.CompresionLZ
             string[] parts2 = descom.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
             return parts2;
         }
-
-
-
 
         void WriteDescompress(string[] descompress, string filepath, string textname)
         {

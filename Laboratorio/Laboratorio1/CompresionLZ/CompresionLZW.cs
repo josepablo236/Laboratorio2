@@ -36,7 +36,6 @@ namespace Laboratorio1.CompresionLZ
                 using (var reader = new BinaryReader(stream))
                 {
                     var byteBuffer = new byte[bufferLength];
-                    tamañoOriginal = Convert.ToInt32(reader.BaseStream.Length);
                     while (reader.BaseStream.Position != reader.BaseStream.Length)
                     {
 
@@ -159,7 +158,7 @@ namespace Laboratorio1.CompresionLZ
                         }
                         if (reader.BaseStream.Position == reader.BaseStream.Length)
                         {
-                            writer2.Write("||");
+                            writer2.Write("|||");
                             foreach (var item in dictionaryoriginals)
                             {
                                 writer2.Write(item);
@@ -169,6 +168,7 @@ namespace Laboratorio1.CompresionLZ
                     }
                 }
             }
+
         }
 
         public double ObtenerTamañoOriginal()
